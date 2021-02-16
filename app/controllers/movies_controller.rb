@@ -10,18 +10,45 @@ class MoviesController < ApplicationController
     @movies = Movie.all
   end
   
-  # def index
-  #   @sort = params[:sort]||session[:sort]
-  #   @all_ratings = Movie.ratings
-  #   @ratings =  params[:ratings] || session[:ratings] || Hash[@all_ratings.map {|rating| [rating, rating]}]
-  #   @movies = Movie.where(rating:@ratings.keys).order(@sort)
-  #   if params[:sort]!=session[:sort] or params[:ratings]!=session[:ratings]
-  #     session[:sort] = @sort
-  #     session[:ratings] = @ratings
-  #     flash.keep
-  #     redirect_to movies_path(sort: session[:sort],ratings:session[:ratings])
-  #   end
-  # end
+  def index
+    @movies = Movie.all
+    @all_ratings = Movie.all_ratings
+    
+    if params[:ratings]
+      @ratings_filter = params[:ratings].keys
+    else
+      if session[:ratings]
+        @ratings_filter = session[:ratings]
+      else
+        @ratings_filter = @all_ratings
+      end
+    end
+    
+    if @ratings_filter!=session[:ratings]
+      session[:ratings] = @ratings_filter
+    end
+    
+    @movies = @movies.where('rating in (?)', @ratings_filter)
+    
+    if params[:sort_by]
+      @sorting = params[:sort_by]
+    else
+      @sorting = session[:sort_by]
+    end
+    
+    if @sorting!=session[:sort_by]
+      session[:sort_by] = @sorting
+    end
+    
+    if @sorting == 'title'
+          @movies = @movies.order(@sorting)
+          @title_sort = 'hilite'
+    elsif @sorting == 'release_date'
+          @movies = @movies.order(@sorting)
+          @release_sort = 'hilite'
+    end
+    
+  end
 
   def new
     # default: render 'new' template
