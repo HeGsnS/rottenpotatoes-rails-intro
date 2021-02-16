@@ -3,27 +3,12 @@
 
 <%#  Part 2: Start here... %>
 
-<%= form_tag movies_path, :method => :get,id:"ratings_form" do %>
-  Include:
-  <% @all_ratings.each do |rating| %>
-    <%= rating %>
-    <%= check_box_tag "ratings[#{rating}]", '',('checked' if @ratings.include? rating) %>
-  <% end %>
-  <%= submit_tag 'Refresh',id: "ratings_submit" %>
-<% end %>
-
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
-      <!--<th>Movie Title</th>-->
-      <th class="<%= ('hilite' if @sort == 'title') %>">
-        <%= link_to 'Movie Title', movies_path(sort: 'title', ratings:@ratings), id:"title_header" %>
-      </th>
+      <th>Movie Title</th>
       <th>Rating</th>
-      <!--<th>Release Date</th>-->
-      <th class="<%= ('hilite' if @sort == 'release_date') %>">
-        <%= link_to 'Release Date',movies_path(sort: 'release_date',ratings:@ratings),id:"release_date_header" %>
-      </th>
+      <th>Release Date</th>
       <th>More Info</th>
     </tr>
   </thead>
