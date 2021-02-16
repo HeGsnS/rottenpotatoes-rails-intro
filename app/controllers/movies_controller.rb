@@ -1,9 +1,5 @@
 class MoviesController < ApplicationController
 
-  def movie_params
-    params.require(:movie).permit(:title, :rating, :description, :release_date)
-  end
-  
   def show
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
@@ -14,45 +10,45 @@ class MoviesController < ApplicationController
     @movies = Movie.all
   end
   
-  def index
-    @movies = Movie.all
-    @all_ratings = Movie.all_ratings
+  # def index
+  #   @movies = Movie.all
+  #   @all_ratings = Movie.all_ratings
     
-    if params[:ratings]
-      @ratings_filter = params[:ratings].keys
-    else
-      if session[:ratings]
-        @ratings_filter = session[:ratings]
-      else
-        @ratings_filter = @all_ratings
-      end
-    end
+  #   if params[:ratings]
+  #     @ratings_filter = params[:ratings].keys
+  #   else
+  #     if session[:ratings]
+  #       @ratings_filter = session[:ratings]
+  #     else
+  #       @ratings_filter = @all_ratings
+  #     end
+  #   end
     
-    if @ratings_filter!=session[:ratings]
-      session[:ratings] = @ratings_filter
-    end
+  #   if @ratings_filter!=session[:ratings]
+  #     session[:ratings] = @ratings_filter
+  #   end
     
-    @movies = @movies.where('rating in (?)', @ratings_filter)
+  #   @movies = @movies.where('rating in (?)', @ratings_filter)
     
-    if params[:sort_by]
-      @sorting = params[:sort_by]
-    else
-      @sorting = session[:sort_by]
-    end
+  #   if params[:sort_by]
+  #     @sorting = params[:sort_by]
+  #   else
+  #     @sorting = session[:sort_by]
+  #   end
     
-    if @sorting!=session[:sort_by]
-      session[:sort_by] = @sorting
-    end
+  #   if @sorting!=session[:sort_by]
+  #     session[:sort_by] = @sorting
+  #   end
     
-    if @sorting == 'title'
-          @movies = @movies.order(@sorting)
-          @title_sort = 'hilite'
-    elsif @sorting == 'release_date'
-          @movies = @movies.order(@sorting)
-          @release_sort = 'hilite'
-    end
+  #   if @sorting == 'title'
+  #         @movies = @movies.order(@sorting)
+  #         @title_sort = 'hilite'
+  #   elsif @sorting == 'release_date'
+  #         @movies = @movies.order(@sorting)
+  #         @release_sort = 'hilite'
+  #   end
     
-  end
+  # end
 
   def new
     # default: render 'new' template
@@ -82,8 +78,10 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
 
-  # private
+  private
   # Making "internal" methods private is not required, but is a common practice.
   # This helps make clear which methods respond to requests, and which ones do not.
-  
+  def movie_params
+    params.require(:movie).permit(:title, :rating, :description, :release_date)
+  end
 end
