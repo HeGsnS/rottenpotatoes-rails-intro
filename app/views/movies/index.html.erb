@@ -7,7 +7,9 @@
   <thead>
     <tr>
       <!--<th>Movie Title</th>-->
-      <th>{class: ('hilite' if @sort == 'title')}= link_to 'Movie Title',movies_path(sort: 'title',ratings:@ratings),id:"title_header"</th>
+      <th class="<%= ('hilite' if @sort == 'title') %>">
+        <%= link_to 'Movie Title',movies_path(sort: 'title',ratings:@ratings),id:"title_header" %>
+      </th>
       <th>Rating</th>
       <th>Release Date</th>
       <th>More Info</th>
