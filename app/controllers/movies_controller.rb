@@ -5,50 +5,41 @@ class MoviesController < ApplicationController
     @movie = Movie.find(id) # look up movie by unique ID
     # will render app/views/movies/show.<extension> by default
   end
-
-  def index
-    @movies = Movie.all
-  end
   
   # def index
   #   @movies = Movie.all
-  #   @all_ratings = Movie.all_ratings
-    
-  #   if params[:ratings]
-  #     @ratings_filter = params[:ratings].keys
-  #   else
-  #     if session[:ratings]
-  #       @ratings_filter = session[:ratings]
-  #     else
-  #       @ratings_filter = @all_ratings
-  #     end
-  #   end
-    
-  #   if @ratings_filter!=session[:ratings]
-  #     session[:ratings] = @ratings_filter
-  #   end
-    
-  #   @movies = @movies.where('rating in (?)', @ratings_filter)
-    
-  #   if params[:sort_by]
-  #     @sorting = params[:sort_by]
-  #   else
-  #     @sorting = session[:sort_by]
-  #   end
-    
-  #   if @sorting!=session[:sort_by]
-  #     session[:sort_by] = @sorting
-  #   end
-    
-  #   if @sorting == 'title'
-  #         @movies = @movies.order(@sorting)
-  #         @title_sort = 'hilite'
-  #   elsif @sorting == 'release_date'
-  #         @movies = @movies.order(@sorting)
-  #         @release_sort = 'hilite'
-  #   end
-    
   # end
+  
+  def index
+    @all_ratings = Movie.all_ratings
+    
+    # current setting from params or session
+    sort = params[:sort] || session[:sort]
+    @checked_ratings = params[:ratings] || session[:ratings] \
+      || Hash[@all_ratings.map { |r| [r, 1] }]
+    
+    # redirect_to
+    if !params[:commit].nil? or params[:ratings].nil? or \
+      (params[:sort].nil? && !session[:sort].nil?)
+      flash.keep
+      redirect_to movies_path :sort => sort, :ratings => @checked_ratings
+    end
+    
+    # the toggled column
+    case sort
+    when 'title'
+      ordering, @title_cls = {:title => :asc}, 'hilite'
+    when 'release_date'
+      ordering, @release_cls = {:release_date => :asc}, 'hilite'
+    end
+    
+    # movies from Movie
+    @movies = Movie.with_ratings(@checked_ratings.keys).order(ordering)
+
+    # current setting to session
+    session[:sort] = sort
+    session[:ratings] = @checked_ratings
+  end
 
   def new
     # default: render 'new' template
