@@ -6,21 +6,15 @@ class MoviesController < ApplicationController
     # will render app/views/movies/show.<extension> by default
   end
   
-  # def index
-  #   @movies = Movie.all
-  # end
-  
   def index
     @all_ratings = Movie.all_ratings
     
     # current setting from params or session
     sort = params[:sort] || session[:sort]
-    @ratings_to_show = params[:ratings] || session[:ratings] \
-      || Hash[@all_ratings.map { |r| [r, 1] }]
+    @ratings_to_show = params[:ratings] || session[:ratings] || Hash[@all_ratings.map { |r| [r, 1] }]
     
     # redirect_to
-    if !params[:commit].nil? or params[:ratings].nil? or \
-      (params[:sort].nil? && !session[:sort].nil?)
+    if !params[:commit].nil? or params[:ratings].nil? or (params[:sort].nil? && !session[:sort].nil?)
       flash.keep
       redirect_to movies_path :sort => sort, :ratings => @ratings_to_show
     end
