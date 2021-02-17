@@ -3,7 +3,7 @@
 
 <%#  Part 2: Start here... %>
 <%= form_tag movies_path, :method => :get, :id => "ratings_form" do %>
-  Include:
+  <!--Include:-->
   <% @all_ratings.each do |rating| %>
     <%= rating %>
     <%= check_box_tag "ratings[#{rating}]", 1, @checked_ratings.include?(rating) %>
