@@ -11,12 +11,12 @@ class MoviesController < ApplicationController
   # end
   
   def index
-    @all_ratings = Movie.all_ratings
+    # @all_ratings = Movie.all_ratings
     
-    # current setting from params or session
-    sort = params[:sort] || session[:sort]
-    @checked_ratings = params[:ratings] || session[:ratings] \
-      || Hash[@all_ratings.map { |r| [r, 1] }]
+    # # current setting from params or session
+    # sort = params[:sort] || session[:sort]
+    # @checked_ratings = params[:ratings] || session[:ratings] \
+    #   || Hash[@all_ratings.map { |r| [r, 1] }]
     
     # # redirect_to
     # if !params[:commit].nil? or params[:ratings].nil? or \
