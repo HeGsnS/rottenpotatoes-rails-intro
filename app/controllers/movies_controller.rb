@@ -28,9 +28,9 @@ class MoviesController < ApplicationController
     # the toggled column
     case sort
     when 'title'
-      ordering, @title_cls = {:title => :asc}, 'hilite'
+      ordering, @title_class = {:title => :asc}, 'hilite'
     when 'release_date'
-      ordering, @release_cls = {:release_date => :asc}, 'hilite'
+      ordering, @release_class = {:release_date => :asc}, 'hilite'
     end
     
     # movies from Movie
