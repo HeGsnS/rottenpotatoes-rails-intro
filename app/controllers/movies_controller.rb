@@ -18,27 +18,27 @@ class MoviesController < ApplicationController
     @checked_ratings = params[:ratings] || session[:ratings] \
       || Hash[@all_ratings.map { |r| [r, 1] }]
     
-    # redirect_to
-    if !params[:commit].nil? or params[:ratings].nil? or \
-      (params[:sort].nil? && !session[:sort].nil?)
-      flash.keep
-      redirect_to movies_path :sort => sort, :ratings => @checked_ratings
-    end
+    # # redirect_to
+    # if !params[:commit].nil? or params[:ratings].nil? or \
+    #   (params[:sort].nil? && !session[:sort].nil?)
+    #   flash.keep
+    #   redirect_to movies_path :sort => sort, :ratings => @checked_ratings
+    # end
     
-    # the toggled column
-    case sort
-    when 'title'
-      ordering, @title_cls = {:title => :asc}, 'hilite'
-    when 'release_date'
-      ordering, @release_cls = {:release_date => :asc}, 'hilite'
-    end
+    # # the toggled column
+    # case sort
+    # when 'title'
+    #   ordering, @title_cls = {:title => :asc}, 'hilite'
+    # when 'release_date'
+    #   ordering, @release_cls = {:release_date => :asc}, 'hilite'
+    # end
     
-    # movies from Movie
-    @movies = Movie.with_ratings(@checked_ratings.keys).order(ordering)
+    # # movies from Movie
+    # @movies = Movie.with_ratings(@checked_ratings.keys).order(ordering)
 
-    # current setting to session
-    session[:sort] = sort
-    session[:ratings] = @checked_ratings
+    # # current setting to session
+    # session[:sort] = sort
+    # session[:ratings] = @checked_ratings
     
     @movies = Movie.all
   end
