@@ -40,7 +40,6 @@ class MoviesController < ApplicationController
     session[:sort] = sort
     session[:ratings] = @ratings_to_show
     
-    # @movies = Movie.all
   end
 
   def new
