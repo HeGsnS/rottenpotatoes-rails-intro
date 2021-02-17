@@ -35,11 +35,15 @@ class MoviesController < ApplicationController
     
     # movies from Movie
     @movies = Movie.with_ratings(@ratings_to_show.keys).order(ordering)
-
+    
+    remember(sort)
+    
+  end
+  
+  def remember(sort)
     # current setting to session
     session[:sort] = sort
     session[:ratings] = @ratings_to_show
-    
   end
 
   def new
