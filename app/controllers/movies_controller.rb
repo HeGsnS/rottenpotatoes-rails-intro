@@ -69,7 +69,7 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
 
-  private
+  # private
   # Making "internal" methods private is not required, but is a common practice.
   # This helps make clear which methods respond to requests, and which ones do not.
   def movie_params
