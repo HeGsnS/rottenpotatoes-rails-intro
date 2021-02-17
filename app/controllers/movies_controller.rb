@@ -25,18 +25,17 @@ class MoviesController < ApplicationController
       redirect_to movies_path :sort => sort, :ratings => @ratings_to_show
     end
     
-    toggle()
+    toggle(sort)
     
     # movies from Movie
     @movies = Movie.with_ratings(@ratings_to_show.keys).order(ordering)
     
-    remember()
+    remember(sort)
     
   end
   
-  def toggle
+  def toggle(sort)
     # the toggled column
-    sort = params[:sort] || session[:sort]
     case sort
     when 'title'
       ordering, @title_class = {:title => :asc}, 'hilite'
@@ -45,9 +44,8 @@ class MoviesController < ApplicationController
     end
   end
   
-  def remember
+  def remember(sort)
     # current setting to session
-    sort = params[:sort] || session[:sort]
     session[:sort] = sort
     session[:ratings] = @ratings_to_show
   end
