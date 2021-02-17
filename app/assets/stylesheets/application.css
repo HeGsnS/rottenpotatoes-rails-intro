@@ -15,5 +15,5 @@
  */
  
  table#movies th.hilite {
-  background-color: yellow;
+  background-color: yellow; /* color of selected header */
 }
