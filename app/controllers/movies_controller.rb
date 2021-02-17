@@ -26,10 +26,6 @@ class MoviesController < ApplicationController
     end
     
     toggle(sort)
-    
-    # movies from Movie
-    @movies = Movie.with_ratings(@ratings_to_show.keys).order(ordering)
-    
     remember(sort)
     
   end
@@ -42,6 +38,9 @@ class MoviesController < ApplicationController
     when 'release_date'
       ordering, @release_class = {:release_date => :asc}, 'hilite'
     end
+    
+    # movies from Movie
+    @movies = Movie.with_ratings(@ratings_to_show.keys).order(ordering)
   end
   
   def remember(sort)
