@@ -19,7 +19,7 @@ class MoviesController < ApplicationController
       redirect_to movies_path :sort => sort, :ratings => @ratings_to_show
     end
     
-    toggle()
+    toggle() 
     remember()
     
   end
