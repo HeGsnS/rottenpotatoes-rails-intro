@@ -7,8 +7,4 @@ class Movie < ActiveRecord::Base
     def self.with_ratings(ratings)
         where("LOWER(rating) IN (?)", ratings.map(&:downcase))
     end
-    # ratings method
-    def self.ratings
-        Movie.select(:rating).distinct.inject([]) { |a, m| a.push m.rating }
-    end
 end
