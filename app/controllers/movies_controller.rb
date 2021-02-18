@@ -7,8 +7,7 @@ class MoviesController < ApplicationController
   end
   
   def index
-    # @all_ratings = Movie.all_ratings
-    @movies = Movie.all
+    @all_ratings = Movie.all_ratings
     
     # current setting from params or session
     sort = params[:sort] || session[:sort]
