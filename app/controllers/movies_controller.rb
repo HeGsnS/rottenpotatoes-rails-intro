@@ -7,43 +7,56 @@ class MoviesController < ApplicationController
   end
   
   def index
-    @all_ratings = Movie.all_ratings
-    
-    # current setting from params or session
-    sort = params[:sort] || session[:sort]
-    @ratings_to_show = params[:ratings] || session[:ratings] || Hash[@all_ratings.map { |r| [r, 1] }]
-    
-    # redirect_to
-    if !params[:commit].nil? or params[:ratings].nil? or (params[:sort].nil? && !session[:sort].nil?)
+    @sort = params[:sort]||session[:sort]
+    @all_ratings = Movie.ratings
+    @ratings_to_show =  params[:ratings] || session[:ratings] || Hash[@all_ratings.map {|rating| [rating, rating]}]
+    @movies = Movie.where(rating:@ratings.keys).order(@sort)
+    if params[:sort]!=session[:sort] or params[:ratings]!=session[:ratings]
+      session[:sort] = @sort
+      session[:ratings] = @ratings_to_show
       flash.keep
-      redirect_to movies_path :sort => sort, :ratings => @ratings_to_show
+      redirect_to movies_path(sort: session[:sort],ratings:session[:ratings])
     end
-    
-    toggle() 
-    remember()
-    
   end
   
-  def toggle
-    # the toggled column
-    sort = params[:sort] || session[:sort]
-    case sort
-    when 'title'
-      ordering, @title_class = {:title => :asc}, 'hilite'
-    when 'release_date'
-      ordering, @release_class = {:release_date => :asc}, 'hilite'
-    end
+  # def index
+  #   @all_ratings = Movie.all_ratings
     
-    # movies from Movie
-    @movies = Movie.with_ratings(@ratings_to_show.keys).order(ordering)
-  end
+  #   # current setting from params or session
+  #   sort = params[:sort] || session[:sort]
+  #   @ratings_to_show = params[:ratings] || session[:ratings] || Hash[@all_ratings.map { |r| [r, 1] }]
+    
+  #   # redirect_to
+  #   if !params[:commit].nil? or params[:ratings].nil? or (params[:sort].nil? && !session[:sort].nil?)
+  #     flash.keep
+  #     redirect_to movies_path :sort => sort, :ratings => @ratings_to_show
+  #   end
+    
+  #   toggle() 
+  #   remember()
+    
+  # end
   
-  def remember
-    # current setting to session
-    sort = params[:sort] || session[:sort]
-    session[:sort] = sort
-    session[:ratings] = @ratings_to_show
-  end
+  # def toggle
+  #   # the toggled column
+  #   sort = params[:sort] || session[:sort]
+  #   case sort
+  #   when 'title'
+  #     ordering, @title_class = {:title => :asc}, 'hilite'
+  #   when 'release_date'
+  #     ordering, @release_class = {:release_date => :asc}, 'hilite'
+  #   end
+    
+  #   # movies from Movie
+  #   @movies = Movie.with_ratings(@ratings_to_show.keys).order(ordering)
+  # end
+  
+  # def remember
+  #   # current setting to session
+  #   sort = params[:sort] || session[:sort]
+  #   session[:sort] = sort
+  #   session[:ratings] = @ratings_to_show
+  # end
 
   def new
     # default: render 'new' template
