@@ -17,6 +17,7 @@ class MoviesController < ApplicationController
     if !params[:commit].nil? or params[:ratings].nil? or (params[:sort].nil? && !session[:sort].nil?)
       flash.keep
       redirect_to movies_path :sort => sort, :ratings => @ratings_to_show
+      return
     end
     
     toggle() 
