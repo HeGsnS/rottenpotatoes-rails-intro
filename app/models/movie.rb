@@ -6,6 +6,5 @@ class Movie < ActiveRecord::Base
     # with_ratings method 
     def self.with_ratings(ratings)
         where("LOWER(rating) IN (?)", ratings.map(&:downcase))
-        # where rating:ratings
     end
 end
