@@ -1,2 +1,2 @@
 https://github.com/HeGsnS/rottenpotatoes-rails-intro
-http://mysterious-taiga-94937.herokuapp.com/
+http://infinite-cliffs-62479.herokuapp.com/
